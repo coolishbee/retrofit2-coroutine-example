@@ -10,6 +10,8 @@ import retrofit2.HttpException
 
 object Network {
 
+    //v1
+    //start
     fun <T> request(
         call: Deferred<T>,
         success: ((response: T)-> Unit)?,
@@ -27,7 +29,10 @@ object Network {
             }
         }
     }
+    //end
 
+    //v2
+    //start
     private fun defaultError(t: Throwable) {
         t.printStackTrace()
     }
@@ -57,24 +62,30 @@ object Network {
             }
         }
     }
+    //end
 
-    fun <T> getListCarrier(onSuccess: ((List<RespCarrier>)->Unit)?,
-                          onError: ((Throwable) -> Unit)?)
-    {
+    //v3
+    fun getListCarrier(onSuccess: ((List<RespCarrier>)->Unit)?,
+                       onError: ((Throwable) -> Unit)?,
+                       doOnSubscribe: (()-> Unit)?= null,
+                       doOnTerminate: (()-> Unit)?= null
+    ) {
         GlobalScope.launch(Dispatchers.Main) {
+            doOnSubscribe?.invoke()
             try {
                 onSuccess?.invoke(ApiProvider.provideApi().getCarriers())
-            }catch (httpException: HttpException){
-                defaultError(httpException)
             }catch (t: Throwable){
                 onError?.let {
                     onError(t)
                 }
+            }finally {
+                doOnTerminate?.invoke()
             }
         }
     }
 
-    fun <T> getCarrierTracks(onSuccess: ((RespCarrierTracks) -> Unit)?,
+    //v3
+    fun getCarrierTracks(onSuccess: ((RespCarrierTracks) -> Unit)?,
                          onError: ((Throwable) -> Unit)?)
     {
         val trackId = 1111111111111L
@@ -82,8 +93,6 @@ object Network {
         GlobalScope.launch(Dispatchers.Main) {
             try {
                 onSuccess?.invoke(ApiProvider.provideApi().getCarriersTracks("kr.epost", trackId))
-            }catch (httpException: HttpException){
-                defaultError(httpException)
             }catch (t: Throwable){
                 onError?.let {
                     onError(t)

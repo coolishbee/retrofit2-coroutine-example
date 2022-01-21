@@ -24,32 +24,32 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/setupSDK_btn"
+                    android:id="@+id/v1_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAllCaps="false"
-                    android:text="Setup SDK" />
+                    android:text="Get Test1" />
 
                 <Button
-                    android:id="@+id/login_btn"
+                    android:id="@+id/v2_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAllCaps="false"
-                    android:text="Login" />
+                    android:text="Get Test2" />
 
                 <Button
-                    android:id="@+id/purchase_btn"
+                    android:id="@+id/v3_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAllCaps="false"
-                    android:text="Purchase"/>
+                    android:text="Get Test3"/>
 
                 <Button
-                    android:id="@+id/test_btn"
+                    android:id="@+id/v4_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAllCaps="false"
-                    android:text="Test" />
+                    android:text="Get Test4" />
 
 
 

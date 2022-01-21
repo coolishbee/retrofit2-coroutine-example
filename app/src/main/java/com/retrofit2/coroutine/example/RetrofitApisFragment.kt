@@ -12,6 +12,7 @@ import com.retrofit2.coroutine.example.http.respBody.RespCarrierTracks
 import com.retrofit2.coroutine.example.reference.ApiProvider
 import com.retrofit2.coroutine.example.reference.Network
 import com.retrofit2.coroutine.example.reference.NetworkCallback
+import retrofit2.HttpException
 
 class RetrofitApisFragment : Fragment() {
 
@@ -26,7 +27,8 @@ class RetrofitApisFragment : Fragment() {
 
         _binding = FragmentApiBinding.inflate(inflater, container, false)
 
-        binding.setupSDKBtn.setOnClickListener{
+        //v1
+        binding.v1Btn.setOnClickListener{
             Network.request(
                 ApiProvider.provideApi().getCarriersAsync(),
                 success = {
@@ -40,8 +42,24 @@ class RetrofitApisFragment : Fragment() {
             )
         }
 
-        binding.testBtn.setOnClickListener{
-            Network.getListCarrier<List<RespCarrier>>(
+        //v2
+        binding.v2Btn.setOnClickListener{
+            Network.request(ApiProvider.provideApi().getCarriersAsync(),
+                NetworkCallback<List<RespCarrier>>().apply {
+                    success = {
+                        for (item in it){
+                            addLog(item.toString())
+                        }
+                    }
+                    error = {
+                        addLog(it.toString())
+                    }
+                })
+        }
+
+        //v3
+        binding.v3Btn.setOnClickListener{
+            Network.getListCarrier(
                 onSuccess = {
                     for (item in it){
                         addLog(item.toString())
@@ -49,33 +67,27 @@ class RetrofitApisFragment : Fragment() {
                 },
                 onError = {
                     addLog(it.toString())
+                },
+                doOnSubscribe = {
+                    Log.d("api", "start")
+                },
+                doOnTerminate = {
+                    Log.d("api", "end")
                 }
             )
         }
 
-        binding.purchaseBtn.setOnClickListener {
-            Network.getCarrierTracks<RespCarrierTracks>(
+        //v3
+        binding.v4Btn.setOnClickListener {
+            Network.getCarrierTracks(
                 onSuccess = {
                     addLog(it.toString())
                 },
                 onError = {
                     addLog(it.message.toString())
+                    //addLog("${(it as HttpException).code()}")
                 }
             )
-        }
-
-        binding.loginBtn.setOnClickListener{
-            Network.request(ApiProvider.provideApi().getCarriersAsync(),
-            NetworkCallback<List<RespCarrier>>().apply {
-                success = {
-                    for (item in it){
-                        addLog(item.toString())
-                    }
-                }
-                error = {
-                    addLog(it.toString())
-                }
-            })
         }
 
         binding.clearLogBtn.setOnClickListener{
@@ -101,6 +113,6 @@ class RetrofitApisFragment : Fragment() {
 
 
     companion object {
-        private const val TAG = "retrofitExample"
+        private const val TAG = "RetrofitApisFragment"
     }
 }
