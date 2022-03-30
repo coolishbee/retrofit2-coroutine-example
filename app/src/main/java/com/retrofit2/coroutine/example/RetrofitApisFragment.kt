@@ -7,12 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.retrofit2.coroutine.example.databinding.FragmentApiBinding
-import com.retrofit2.coroutine.example.http.respBody.RespCarrier
-import com.retrofit2.coroutine.example.http.respBody.RespCarrierTracks
+import com.retrofit2.coroutine.example.http.reqBody.ReqLogin
 import com.retrofit2.coroutine.example.reference.ApiProvider
 import com.retrofit2.coroutine.example.reference.Network
-import com.retrofit2.coroutine.example.reference.NetworkCallback
-import retrofit2.HttpException
 
 class RetrofitApisFragment : Fragment() {
 
@@ -27,8 +24,7 @@ class RetrofitApisFragment : Fragment() {
 
         _binding = FragmentApiBinding.inflate(inflater, container, false)
 
-        //v1
-        binding.v1Btn.setOnClickListener{
+        binding.deferredGetBtn.setOnClickListener{
             Network.request(
                 ApiProvider.provideApi().getCarriersAsync(),
                 success = {
@@ -42,23 +38,21 @@ class RetrofitApisFragment : Fragment() {
             )
         }
 
-        //v2
-        binding.v2Btn.setOnClickListener{
-            Network.request(ApiProvider.provideApi().getCarriersAsync(),
-                NetworkCallback<List<RespCarrier>>().apply {
-                    success = {
-                        for (item in it){
-                            addLog(item.toString())
-                        }
-                    }
-                    error = {
-                        addLog(it.toString())
-                    }
-                })
+        binding.deferredPostBtn.setOnClickListener {
+            val token = "google id_token"
+            val reqLogin = ReqLogin.createReqLoginInfo("GOOGLE", token)
+            Network.request(
+                ApiProvider.provideApi().postLogin(reqLogin),
+                success = {
+                    addLog(it.toString())
+                },
+                error = {
+                    addLog(it.message.toString())
+                }
+            )
         }
 
-        //v3
-        binding.v3Btn.setOnClickListener{
+        binding.suspendGetListBtn.setOnClickListener{
             Network.getListCarrier(
                 onSuccess = {
                     for (item in it){
@@ -77,8 +71,7 @@ class RetrofitApisFragment : Fragment() {
             )
         }
 
-        //v3
-        binding.v4Btn.setOnClickListener {
+        binding.suspendGetBtn.setOnClickListener {
             Network.getCarrierTracks(
                 onSuccess = {
                     addLog(it.toString())
@@ -90,11 +83,22 @@ class RetrofitApisFragment : Fragment() {
             )
         }
 
+        binding.loginBtn.setOnClickListener {
+            val token = "google id_token"
+            val reqLogin = ReqLogin.createReqLoginInfo("GOOGLE", token)
+            Network.login(reqLogin,
+                onSuccess = {
+                    addLog(it.toString())
+                }, onError = {
+                    addLog(it.message.toString())
+                }
+            )
+        }
+
         binding.clearLogBtn.setOnClickListener{
             binding.log.text = ""
 
         }
-
 
         return binding.root
     }
