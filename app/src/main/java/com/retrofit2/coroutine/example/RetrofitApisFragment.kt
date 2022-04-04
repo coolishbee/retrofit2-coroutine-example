@@ -8,8 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.retrofit2.coroutine.example.databinding.FragmentApiBinding
 import com.retrofit2.coroutine.example.http.reqBody.ReqLogin
+import com.retrofit2.coroutine.example.http.respBody.RespLogin
 import com.retrofit2.coroutine.example.reference.ApiProvider
 import com.retrofit2.coroutine.example.reference.Network
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class RetrofitApisFragment : Fragment() {
 
@@ -23,34 +27,6 @@ class RetrofitApisFragment : Fragment() {
     ): View? {
 
         _binding = FragmentApiBinding.inflate(inflater, container, false)
-
-        binding.deferredGetBtn.setOnClickListener{
-            Network.request(
-                ApiProvider.provideApi().getCarriersAsync(),
-                success = {
-                    for (item in it){
-                        addLog(item.toString())
-                    }
-                },
-                error = {
-                    addLog(it.toString())
-                }
-            )
-        }
-
-        binding.deferredPostBtn.setOnClickListener {
-            val token = "google id_token"
-            val reqLogin = ReqLogin.createReqLoginInfo("GOOGLE", token)
-            Network.request(
-                ApiProvider.provideApi().postLogin(reqLogin),
-                success = {
-                    addLog(it.toString())
-                },
-                error = {
-                    addLog(it.message.toString())
-                }
-            )
-        }
 
         binding.suspendGetListBtn.setOnClickListener{
             Network.getListCarrier(

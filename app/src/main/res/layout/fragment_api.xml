@@ -24,20 +24,6 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/deferred_get_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAllCaps="false"
-                    android:text="Get Deferred" />
-
-                <Button
-                    android:id="@+id/deferred_post_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAllCaps="false"
-                    android:text="Post Deferred" />
-
-                <Button
                     android:id="@+id/suspend_get_list_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

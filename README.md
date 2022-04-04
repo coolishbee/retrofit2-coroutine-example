@@ -16,14 +16,10 @@ dependencies {
     // Retrofit2
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.4.0'    
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.4.0'
 }
 ```
 
 ## Backend
 
 [go-gin-sample](https://github.com/coolishbee/go-gin-sample) is the simple RESTful API server.
-
-## Reference
-
-- [Retrofit2 HttpClient Module](https://gist.github.com/soulduse/b832152e42b893581f7736f4524f3dcd)
